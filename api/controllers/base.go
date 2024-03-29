@@ -19,18 +19,9 @@ type Server struct {
 
 func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string) {
 
-	fmt.Printf("Dbdriver: %s\n", Dbdriver)
-	fmt.Printf("DbUser: %s\n", DbUser)
-	fmt.Printf("DbHost: %s\n", DbHost)
-	fmt.Printf("DbName: %s\n", DbName)
-	fmt.Printf("DbPort: %s\n", DbPort)
-	fmt.Printf("DbPassword: %s\n", DbPassword)
-
 	var err error
 
 	DBURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=require password=%s", DbHost, DbPort, DbUser, DbName, DbPassword)
-
-	fmt.Printf("DBURL: %s\n", DBURL)
 
 	server.DB, err = gorm.Open(Dbdriver, DBURL)
 	if err != nil {
