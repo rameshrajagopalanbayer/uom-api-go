@@ -9,7 +9,7 @@ import (
 )
 
 // var globalVar uomCacheInstance  *uomCache = uomcache.NewUomCache()
-var name = uomcache.NewUomCache()
+var uomCache = uomcache.NewUomCache()
 
 func (server *Server) GetUoms(w http.ResponseWriter, r *http.Request) {
 
