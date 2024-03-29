@@ -4,8 +4,12 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rameshrajagopalanbayer/uom-api-go/api/models"
 	"github.com/rameshrajagopalanbayer/uom-api-go/api/responses"
+	"github.com/rameshrajagopalanbayer/uom-api-go/api/uomcache"
 	"net/http"
 )
+
+// var globalVar uomCacheInstance  *uomCache = uomcache.NewUomCache()
+var name = uomcache.NewUomCache()
 
 func (server *Server) GetUoms(w http.ResponseWriter, r *http.Request) {
 
