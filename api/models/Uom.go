@@ -17,7 +17,7 @@ type Uom struct {
 func (u *Uom) FindAllUoms(db *gorm.DB) (*[]Uom, error) {
 	var err error
 	Uoms := []Uom{}
-	err = db.Debug().Model(&Uom{}).Limit(100).Find(&Uoms).Error
+	err = db.Table("measurements.uom").Model(&Uom{}).Limit(100).Find(&Uoms).Error
 	if err != nil {
 		return &[]Uom{}, err
 	}

@@ -9,4 +9,6 @@ func (s *Server) initializeRoutes() {
 
 	s.Router.HandleFunc("/uoms", middlewares.SetMiddlewareJSON(s.GetUoms)).Methods("GET")
 
+	s.Router.HandleFunc("/uom/{code}", middlewares.SetMiddlewareJSON(s.GetUom)).Methods("GET")
+
 }
