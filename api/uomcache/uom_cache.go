@@ -5,6 +5,7 @@ import (
 	"github.com/patrickmn/go-cache"
 	"github.com/rameshrajagopalanbayer/uom-api-go/api/models"
 	"log"
+	"sync"
 	"time"
 )
 
@@ -16,6 +17,21 @@ const (
 	defaultExpiration = 5 * time.Minute
 	purgeTime         = 10 * time.Minute
 )
+
+var singletonUomCache *uomCache
+var once sync.Once
+
+func GetSingletonUomCache() *uomCache {
+	// 👇 the function only gets called one
+	once.Do(func() {
+		Cache := cache.New(defaultExpiration, purgeTime)
+		singletonUomCache = &uomCache{
+			uoms: Cache,
+		}
+	})
+
+	return singletonUomCache
+}
 
 func NewUomCache() *uomCache {
 	Cache := cache.New(defaultExpiration, purgeTime)
