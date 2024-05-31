@@ -16,9 +16,8 @@ func (server *Server) GetUoms(w http.ResponseWriter, r *http.Request) {
 
 	cachedUoms := uomCache.GetAll()
 
-	log.Println("cachedUoms", len(cachedUoms))
-
 	if len(cachedUoms) != 0 {
+		log.Println("from uomcache")
 		responses.JSON(w, http.StatusOK, cachedUoms)
 		return
 	}
@@ -51,18 +50,32 @@ func (server *Server) GetUom(w http.ResponseWriter, r *http.Request) {
 	code := params["code"]
 	uom := models.Uom{}
 
+	cachedUoms := uomCache.GetAll()
+
+	log.Println("cachedUoms", len(cachedUoms))
+
+	if len(cachedUoms) != 0 {
+		log.Println("from uomcache")
+		returnUomForCode(w, &cachedUoms, code)
+		return
+	}
+
 	uoms, err := uom.FindAllUoms(server.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
 
+	uomCache.UpdateAll(*uoms)
+
+	returnUomForCode(w, uoms, code)
+}
+
+func returnUomForCode(w http.ResponseWriter, uoms *[]models.Uom, code string) {
 	for _, value := range *uoms {
 		if value.Code == code {
 			responses.JSON(w, http.StatusOK, value)
 			return
 		}
 	}
-
-	//responses.JSON(w, http.StatusOK, []string{})
 }
