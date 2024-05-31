@@ -57,13 +57,13 @@ func (c *uomCache) update(id string, uom models.Uom) {
 	c.uoms.Set(id, uom, cache.DefaultExpiration)
 }
 
-func (c *uomCache) updateAll(uoms []models.Uom) {
+func (c *uomCache) UpdateAll(uoms []models.Uom) {
 	for _, uom := range uoms {
 		c.uoms.Set(uom.Code, uom, cache.DefaultExpiration)
 	}
 }
 
-func (c *uomCache) getAll() []models.Uom {
+func (c *uomCache) GetAll() []models.Uom {
 	var uoms []models.Uom
 	for _, value := range c.uoms.Items() {
 		uoms = append(uoms, value.Object.(models.Uom))

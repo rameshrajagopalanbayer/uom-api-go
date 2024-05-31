@@ -5,6 +5,7 @@ import (
 	"github.com/rameshrajagopalanbayer/uom-api-go/api/models"
 	"github.com/rameshrajagopalanbayer/uom-api-go/api/responses"
 	"github.com/rameshrajagopalanbayer/uom-api-go/api/uomcache"
+	"log"
 	"net/http"
 )
 
@@ -13,9 +14,21 @@ var uomCache = uomcache.NewUomCache()
 
 func (server *Server) GetUoms(w http.ResponseWriter, r *http.Request) {
 
+	cachedUoms := uomCache.GetAll()
+
+	log.Println("cachedUoms", len(cachedUoms))
+
+	if len(cachedUoms) != 0 {
+		responses.JSON(w, http.StatusOK, cachedUoms)
+		return
+	}
+
 	uom := models.Uom{}
 
 	uoms, err := uom.FindAllUoms(server.DB)
+
+	uomCache.UpdateAll(*uoms)
+
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
